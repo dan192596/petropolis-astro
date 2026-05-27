@@ -1,0 +1,55 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import LocationMap from '../components/LocationMap.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { site } from '../data/site';
+
+const channels = [
+  { icon: '✂️', title: 'Grooming', desc: 'Baño, corte, mimos', message: 'grooming' as const },
+  { icon: '💉', title: 'Vacunas y consulta', desc: 'Atención médica veterinaria', message: 'vet' as const },
+  { icon: '🍖', title: 'Productos', desc: 'Concentrados, pipetas, accesorios', message: 'products' as const },
+  { icon: '🚨', title: 'Emergencia', desc: 'Algo urgente con tu mascota', message: 'emergency' as const },
+];
+---
+<Layout title={`Contacto · ${site.name}`} description="Contactanos por WhatsApp para cualquier consulta sobre grooming, veterinaria o productos para tu mascota.">
+  <Nav />
+  <main>
+    <section class="py-12 md:py-20">
+      <div class="max-w-4xl mx-auto px-5 text-center">
+        <p class="text-xs md:text-sm font-extrabold tracking-[0.2em] uppercase text-teal-deep dark:text-teal mb-2">Contacto</p>
+        <h1 class="font-display font-black text-4xl md:text-6xl text-navy dark:text-cream tracking-tight mb-4">
+          ¿Qué <span class="inline-block bg-lime text-navy px-2 rounded-xl -rotate-1">necesitás</span>?
+        </h1>
+        <p class="text-base md:text-lg text-navy-soft dark:text-cream/80 max-w-xl mx-auto">
+          Toda comunicación va por WhatsApp. Llamadas y correo no siempre se contestan a tiempo — escribinos y te respondemos.
+        </p>
+      </div>
+    </section>
+
+    <section class="pb-12 md:pb-16">
+      <div class="max-w-4xl mx-auto px-5 grid sm:grid-cols-2 gap-4">
+        {channels.map((c) => (
+          <a
+            href={`https://wa.me/${site.whatsapp.digits}?text=${encodeURIComponent(site.messages[c.message])}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group bg-white dark:bg-navy/40 border border-navy/5 dark:border-cream/10 rounded-3xl p-6 md:p-7 hover:-translate-y-1 transition-transform shadow-md shadow-navy/5"
+          >
+            <div class="w-14 h-14 grid place-items-center rounded-2xl bg-teal-50 dark:bg-teal/20 mb-4 text-3xl">{c.icon}</div>
+            <div class="font-display font-black text-xl md:text-2xl text-navy dark:text-cream mb-1">{c.title}</div>
+            <div class="text-sm text-navy-soft dark:text-cream/70 mb-4">{c.desc}</div>
+            <span class="inline-flex items-center gap-2 text-wa font-bold text-sm">
+              Escribir por WhatsApp <span aria-hidden="true">→</span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <LocationMap />
+  </main>
+  <Footer />
+  <WhatsAppButton variant="floating" message="general" />
+</Layout>

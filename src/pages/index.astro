@@ -1,8 +1,25 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import TwoPillars from '../components/TwoPillars.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import Gallery from '../components/Gallery.astro';
+import SocialProof from '../components/SocialProof.astro';
+import LocationMap from '../components/LocationMap.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
 ---
 <Layout>
-  <main class="p-8">
-    <h1 class="font-display text-4xl text-navy">Petropolis (en construcción)</h1>
+  <Nav />
+  <main>
+    <Hero />
+    <TwoPillars />
+    <ServicesGrid />
+    <Gallery />
+    <SocialProof />
+    <LocationMap />
   </main>
+  <Footer />
+  <WhatsAppButton variant="floating" message="general" />
 </Layout>
