@@ -1,0 +1,33 @@
+---
+import WhatsAppButton from './WhatsAppButton.astro';
+---
+<section id="pilares" class="py-16 md:py-20 bg-paper dark:bg-[color:var(--surface-card)]">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-10">
+      <p class="text-xs md:text-sm font-extrabold tracking-[0.2em] uppercase text-teal-deep dark:text-teal mb-2">Lo que hacemos</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl text-navy dark:text-cream tracking-tight">
+        Dos pilares, un mismo cariño.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <article class="bg-white dark:bg-navy/40 rounded-3xl p-7 md:p-9 shadow-lg shadow-navy/5 border border-navy/5 dark:border-cream/10">
+        <div class="w-14 h-14 grid place-items-center rounded-2xl bg-teal-50 dark:bg-teal/20 mb-5 text-3xl">✂️</div>
+        <h3 class="font-display font-black text-2xl md:text-3xl text-navy dark:text-cream mb-3">Grooming</h3>
+        <p class="text-navy-soft dark:text-cream/80 mb-5 leading-relaxed">
+          Baños, cortes y mimos. Cuidamos el pelaje, las uñas y la salud externa de tu mascota con productos suaves y un trato paciente.
+        </p>
+        <WhatsAppButton variant="primary" message="grooming" label="Agendar grooming" class="!px-5 !py-3 !text-sm" />
+      </article>
+
+      <article class="bg-white dark:bg-navy/40 rounded-3xl p-7 md:p-9 shadow-lg shadow-navy/5 border border-navy/5 dark:border-cream/10">
+        <div class="w-14 h-14 grid place-items-center rounded-2xl bg-lime/30 dark:bg-lime/20 mb-5 text-3xl">🩺</div>
+        <h3 class="font-display font-black text-2xl md:text-3xl text-navy dark:text-cream mb-3">Veterinaria & Productos</h3>
+        <p class="text-navy-soft dark:text-cream/80 mb-5 leading-relaxed">
+          Vacunas, desparasitantes, atención médica y todo lo que tu mascota necesita en casa — concentrados, pipetas, accesorios y más.
+        </p>
+        <WhatsAppButton variant="primary" message="vet" label="Consultar veterinaria" class="!px-5 !py-3 !text-sm" />
+      </article>
+    </div>
+  </div>
+</section>

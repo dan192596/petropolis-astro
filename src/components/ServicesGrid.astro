@@ -1,0 +1,65 @@
+---
+import { site } from '../data/site';
+
+const groomingIcons: Record<string, string> = {
+  'Baño tibio': '🛁',
+  'Secado y cepillado': '💨',
+  'Corte de pelo': '✂️',
+  'Corte de uñas': '💅',
+  'Limpieza de orejas': '👂',
+  'Drenaje de glándulas anales': '🩺',
+  'Loción': '🌿',
+  'Accesorios': '🎀',
+};
+
+const vetIcons: Record<string, string> = {
+  'Vacunas': '💉',
+  'Pipetas y collares antipulgas': '🛡️',
+  'Desparasitantes': '💊',
+  'Concentrados': '🍖',
+  'Atención médica': '❤️',
+  'Accesorios para mascotas': '🦴',
+};
+---
+<section id="servicios" class="py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-10">
+      <p class="text-xs md:text-sm font-extrabold tracking-[0.2em] uppercase text-teal-deep dark:text-teal mb-2">Servicios</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl text-navy dark:text-cream tracking-tight">
+        Todo lo que ofrecemos.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8 md:gap-10">
+      <div>
+        <h3 class="font-display font-black text-xl text-navy dark:text-cream mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 grid place-items-center rounded-lg bg-teal-50 dark:bg-teal/20">✂️</span>
+          Grooming
+        </h3>
+        <ul class="grid grid-cols-2 gap-2.5">
+          {site.services.grooming.map((s) => (
+            <li class="flex items-center gap-2.5 px-3 py-2.5 bg-white dark:bg-navy/40 rounded-xl border border-navy/5 dark:border-cream/10 text-sm font-semibold text-navy dark:text-cream">
+              <span class="text-lg" aria-hidden="true">{groomingIcons[s] ?? '🐾'}</span>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="font-display font-black text-xl text-navy dark:text-cream mb-4 flex items-center gap-2">
+          <span class="w-8 h-8 grid place-items-center rounded-lg bg-lime/30 dark:bg-lime/20">🩺</span>
+          Veterinaria y productos
+        </h3>
+        <ul class="grid grid-cols-2 gap-2.5">
+          {site.services.vet.map((s) => (
+            <li class="flex items-center gap-2.5 px-3 py-2.5 bg-white dark:bg-navy/40 rounded-xl border border-navy/5 dark:border-cream/10 text-sm font-semibold text-navy dark:text-cream">
+              <span class="text-lg" aria-hidden="true">{vetIcons[s] ?? '🐾'}</span>
+              {s}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
