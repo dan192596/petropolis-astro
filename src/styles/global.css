@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Self-host font faces */
+@import "@fontsource-variable/outfit";
+@import "@fontsource-variable/plus-jakarta-sans";
+@import "@fontsource-variable/nunito";
+
+/*
+ * Dark mode variant: any element under [data-theme="dark"] picks up dark: utilities.
+ * Tailwind v4 requires this custom variant when not using a class strategy.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Tailwind v4: tokens are defined here, not in a JS config.
+ * Anything declared in @theme becomes a CSS custom property AND a
+ * Tailwind utility (e.g. --color-teal -> bg-teal, text-teal, border-teal).
+ */
+@theme {
+  --color-pink: #EC4B82;
+  --color-pink-light: #F5A7B8;
+  --color-teal: #1FB6B6;
+  --color-teal-50: #E8F8F8;
+  --color-teal-100: #C5EEEE;
+  --color-teal-deep: #178a8a;
+  --color-lime: #C5E86C;
+  --color-lime-deep: #a8cc4a;
+  --color-cream: #FFF6E8;
+  --color-cream-deep: #F4D9A8;
+  --color-navy: #0F2A3A;
+  --color-navy-soft: #2a4555;
+  --color-paper: #F8F5EF;
+  --color-wa: #25D366;
+
+  --font-display: "Outfit Variable", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans Variable", system-ui, sans-serif;
+  --font-logo: "Nunito Variable", system-ui, sans-serif;
+}
+
+/*
+ * Theme-aware surface tokens. These switch between light and dark.
+ * The Tailwind tokens above stay constant (brand colors don't shift),
+ * but the surface/text/background tokens do.
+ */
+:root {
+  --surface-bg: #fafafa;
+  --surface-card: #ffffff;
+  --surface-text: #0F2A3A;
+  --surface-text-soft: #2a4555;
+  --surface-accent-bg: #E8F8F8;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --surface-bg: #0d1620;
+  --surface-card: #162230;
+  --surface-text: #f0f4f8;
+  --surface-text-soft: #a5b4c4;
+  --surface-accent-bg: rgba(31, 182, 182, 0.18);
+  color-scheme: dark;
+}
+
+html { background: var(--surface-bg); }
+body {
+  font-family: var(--font-body);
+  color: var(--surface-text);
+  background: var(--surface-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Reduce motion: kill non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
