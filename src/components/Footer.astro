@@ -1,0 +1,37 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+<footer class="bg-navy text-cream/80 pt-14 pb-8">
+  <div class="max-w-6xl mx-auto px-5 grid md:grid-cols-3 gap-10">
+    <div>
+      <Logo size="md" invert />
+      <p class="mt-3 text-sm text-cream/60 max-w-xs">
+        Veterinaria y centro de grooming en {site.location.city}.
+      </p>
+    </div>
+    <div>
+      <h3 class="font-display font-black text-cream text-base mb-3">Contacto</h3>
+      <ul class="text-sm space-y-2">
+        <li>
+          <a class="hover:text-teal" href={`https://wa.me/${site.whatsapp.digits}`} target="_blank" rel="noopener">
+            WhatsApp: {site.whatsapp.pretty}
+          </a>
+        </li>
+        <li>{site.location.addressLine}</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-display font-black text-cream text-base mb-3">Horario</h3>
+      <ul class="text-sm space-y-2">
+        <li>{site.hours.weekdays}</li>
+        <li>Hasta las {site.hours.closing}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="max-w-6xl mx-auto px-5 mt-10 pt-6 border-t border-cream/10 text-xs text-cream/50 flex justify-between flex-wrap gap-2">
+    <span>© {year} {site.name}</span>
+    <span>Hecho con cariño 🐾</span>
+  </div>
+</footer>

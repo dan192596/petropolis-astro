@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { site } from '../data/site';
+import PawCursor from '../components/PawCursor.astro';
 
 interface Props {
   title?: string;
@@ -51,8 +52,36 @@ const ogImage = new URL('/og-image.png', Astro.site ?? site.url).toString();
     <meta name="twitter:image" content={ogImage} />
 
     <meta name="theme-color" content="#1FB6B6" />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'VeterinaryCare',
+      name: site.name,
+      description: site.description,
+      url: canonical,
+      telephone: site.whatsapp.raw,
+      image: ogImage,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: site.location.city,
+        addressCountry: 'GT',
+        description: site.location.addressLine,
+      },
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: site.location.lat,
+        longitude: site.location.lng,
+      },
+      openingHours: 'Mo-Sa 09:00-18:00',
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: site.rating.value,
+        reviewCount: site.rating.count,
+      },
+    })} />
   </head>
   <body>
+    <PawCursor />
     <slot />
   </body>
 </html>

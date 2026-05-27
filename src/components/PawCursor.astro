@@ -1,0 +1,76 @@
+---
+// Pure script island. No visible markup, just attaches a mousemove listener
+// that drops fading paw SVGs along the cursor trail on desktop.
+---
+<div id="paw-cursor-host" class="pointer-events-none fixed inset-0 z-50 overflow-hidden hidden md:block"></div>
+
+<script>
+  const host = document.getElementById('paw-cursor-host');
+  const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (host && supportsHover && !prefersReducedMotion) {
+    const POOL_SIZE = 12;
+    const pool: HTMLSpanElement[] = [];
+    for (let i = 0; i < POOL_SIZE; i++) {
+      const span = document.createElement('span');
+      span.className = 'paw-trail';
+      span.innerHTML = `
+        <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+          <ellipse cx="20" cy="26" rx="9" ry="8" fill="#1FB6B6"/>
+          <ellipse cx="9" cy="14" rx="3.5" ry="4.5" fill="#1FB6B6"/>
+          <ellipse cx="17" cy="9" rx="3.5" ry="4.5" fill="#1FB6B6"/>
+          <ellipse cx="23" cy="9" rx="3.5" ry="4.5" fill="#1FB6B6"/>
+          <ellipse cx="31" cy="14" rx="3.5" ry="4.5" fill="#1FB6B6"/>
+        </svg>`;
+      host.appendChild(span);
+      pool.push(span);
+    }
+
+    let cursor = 0;
+    let lastDrop = 0;
+    const THROTTLE_MS = 60;
+    const PIXEL_GAP = 40;
+    let lastX = 0, lastY = 0;
+    let leftStep = true;
+
+    window.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - lastDrop < THROTTLE_MS) return;
+      const dx = e.clientX - lastX, dy = e.clientY - lastY;
+      if (Math.hypot(dx, dy) < PIXEL_GAP) return;
+      lastDrop = now;
+      lastX = e.clientX; lastY = e.clientY;
+
+      const span = pool[cursor];
+      cursor = (cursor + 1) % POOL_SIZE;
+      const offset = leftStep ? -6 : 6;
+      const rotation = leftStep ? -18 + (Math.random() * 12 - 6) : 18 + (Math.random() * 12 - 6);
+      leftStep = !leftStep;
+      span.style.left = `${e.clientX + offset}px`;
+      span.style.top = `${e.clientY + offset}px`;
+      span.style.setProperty('--rot', `${rotation}deg`);
+      span.classList.remove('drop');
+      // Force reflow so the animation restarts each drop.
+      void span.offsetWidth;
+      span.classList.add('drop');
+    });
+  }
+</script>
+
+<style is:global>
+  .paw-trail {
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(0.8);
+    opacity: 0;
+    will-change: opacity, transform;
+  }
+  .paw-trail.drop {
+    animation: paw-fade 700ms ease-out forwards;
+  }
+  @keyframes paw-fade {
+    0%   { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(0.5); }
+    25%  { opacity: 0.75; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--rot, 0deg)) scale(0.9); }
+  }
+</style>

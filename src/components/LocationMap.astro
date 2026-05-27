@@ -1,0 +1,120 @@
+---
+import { site } from '../data/site';
+---
+<section id="ubicacion" class="py-16 md:py-20 bg-paper dark:bg-[color:var(--surface-card)]">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-8">
+      <p class="text-xs md:text-sm font-extrabold tracking-[0.2em] uppercase text-teal-deep dark:text-teal mb-2">Ubicación</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl text-navy dark:text-cream tracking-tight">
+        Estamos en {site.location.city}.
+      </h2>
+    </div>
+
+    <div class="grid md:grid-cols-[1fr_1.3fr] gap-6 bg-white dark:bg-navy/40 rounded-3xl overflow-hidden border border-navy/5 dark:border-cream/10">
+      <div class="p-7 md:p-8 space-y-4">
+        <div class="flex gap-3">
+          <div class="w-9 h-9 grid place-items-center rounded-xl bg-teal-50 dark:bg-teal/20 text-lg">📍</div>
+          <div>
+            <div class="font-bold text-navy dark:text-cream">{site.location.addressLine}</div>
+            <div class="text-xs text-navy-soft dark:text-cream/70">{site.location.lat}°N, {Math.abs(site.location.lng)}°W</div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <div class="w-9 h-9 grid place-items-center rounded-xl bg-teal-50 dark:bg-teal/20 text-lg">🕐</div>
+          <div>
+            <div class="font-bold text-navy dark:text-cream">{site.hours.weekdays}</div>
+            <div class="text-xs text-navy-soft dark:text-cream/70">Hasta las {site.hours.closing}</div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <div class="w-9 h-9 grid place-items-center rounded-xl bg-teal-50 dark:bg-teal/20 text-lg">💬</div>
+          <div>
+            <div class="font-bold text-navy dark:text-cream">{site.whatsapp.pretty}</div>
+            <div class="text-xs text-navy-soft dark:text-cream/70">Vía WhatsApp</div>
+          </div>
+        </div>
+        <a
+          href={site.location.directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-2 px-5 py-3 bg-teal text-white rounded-2xl font-bold text-sm hover:scale-[1.02] active:scale-[0.98] transition-transform mt-2"
+        >
+          Cómo llegar <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <div
+        id="petropolis-map"
+        class="aspect-[4/3] md:aspect-auto md:min-h-[360px] bg-teal-50 dark:bg-navy/60"
+        data-lat={site.location.lat}
+        data-lng={site.location.lng}
+        data-pretty={site.location.addressLine}
+        data-hours={`${site.hours.weekdays}, hasta las ${site.hours.closing}`}
+      ></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import L from 'leaflet';
+  import 'leaflet/dist/leaflet.css';
+
+  const el = document.getElementById('petropolis-map') as HTMLDivElement | null;
+  if (el && !el.dataset.hydrated) {
+    el.dataset.hydrated = 'true';
+    const lat = Number(el.dataset.lat);
+    const lng = Number(el.dataset.lng);
+    const pretty = el.dataset.pretty ?? '';
+    const hours = el.dataset.hours ?? '';
+
+    const map = L.map(el, { scrollWheelZoom: false, zoomControl: true }).setView([lat, lng], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19,
+    }).addTo(map);
+
+    const pinIcon = L.divIcon({
+      className: 'petropolis-pin',
+      html: `
+        <span class="pulse"></span>
+        <svg viewBox="0 0 40 48" width="40" height="48" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 47 Q 5 30, 5 18 A 15 15 0 1 1 35 18 Q 35 30, 20 47 Z" fill="#1FB6B6"/>
+          <circle cx="20" cy="18" r="7" fill="white"/>
+          <circle cx="20" cy="18" r="4" fill="#1FB6B6"/>
+        </svg>
+      `,
+      iconSize: [40, 48],
+      iconAnchor: [20, 48],
+      popupAnchor: [0, -42],
+    });
+
+    L.marker([lat, lng], { icon: pinIcon })
+      .addTo(map)
+      .bindPopup(
+        `<strong>Veterinaria Petropolis</strong><br />${pretty}<br /><small>${hours}</small>`
+      );
+  }
+</script>
+
+<style is:global>
+  .petropolis-pin {
+    position: relative;
+  }
+  .petropolis-pin .pulse {
+    position: absolute;
+    left: 20px;
+    top: 18px;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    background: rgba(31, 182, 182, 0.35);
+    border-radius: 50%;
+    transform-origin: center;
+    animation: petropolis-pulse 2s infinite;
+  }
+  @keyframes petropolis-pulse {
+    0%   { transform: scale(0.6); opacity: 0.7; }
+    100% { transform: scale(3); opacity: 0; }
+  }
+</style>
