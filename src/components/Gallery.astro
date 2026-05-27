@@ -1,0 +1,51 @@
+---
+import PetFrenchie from './illustrations/PetFrenchie.astro';
+import PetGrayCat from './illustrations/PetGrayCat.astro';
+import PetTabby from './illustrations/PetTabby.astro';
+import PetSchnauzer from './illustrations/PetSchnauzer.astro';
+import PetPoodle from './illustrations/PetPoodle.astro';
+import PetRabbit from './illustrations/PetRabbit.astro';
+
+type Pet = {
+  Component: typeof PetFrenchie;
+  name: string;
+  breed: string;
+  bgClass: string;
+};
+
+// Note: we use `lime/40` style classes (custom token + alpha) instead of
+// `lime-200` because defining `--color-lime` in @theme replaces the default
+// lime-* palette. The other colors (amber, rose, slate, orange) aren't
+// overridden, so their default shades still work.
+const pets: Pet[] = [
+  { Component: PetFrenchie, name: 'Lulú', breed: 'Bulldog Francés', bgClass: 'from-amber-200 to-amber-300' },
+  { Component: PetGrayCat, name: 'Mishi', breed: 'Gato común', bgClass: 'from-teal/30 to-teal/10' },
+  { Component: PetTabby, name: 'Naranja', breed: 'Gato atigrado', bgClass: 'from-rose-200 to-rose-100' },
+  { Component: PetSchnauzer, name: 'Tito', breed: 'Schnauzer', bgClass: 'from-lime/50 to-lime/20' },
+  { Component: PetPoodle, name: 'Bianca', breed: 'Poodle Toy', bgClass: 'from-slate-200 to-slate-100' },
+  { Component: PetRabbit, name: 'Conejín', breed: 'Conejo', bgClass: 'from-orange-200 to-orange-100' },
+];
+---
+<section id="galeria" class="py-16 md:py-20 bg-paper dark:bg-[color:var(--surface-card)]">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="text-center mb-10">
+      <p class="text-xs md:text-sm font-extrabold tracking-[0.2em] uppercase text-teal-deep dark:text-teal mb-2">Galería</p>
+      <h2 class="font-display font-black text-3xl md:text-5xl text-navy dark:text-cream tracking-tight">
+        Nuestra <span class="inline-block bg-lime text-navy px-2 rounded-lg -rotate-1">familia</span> peluda.
+      </h2>
+      <p class="mt-3 text-navy-soft dark:text-cream/70 text-sm">Algunos de los amigos que han pasado por Petropolis</p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-5">
+      {pets.map(({ Component, name, breed, bgClass }) => (
+        <div class="bg-white dark:bg-navy/40 rounded-2xl p-3 md:p-4 text-center border border-navy/5 dark:border-cream/10 transition-transform hover:-translate-y-1">
+          <div class={`aspect-square rounded-xl grid place-items-center bg-gradient-to-br ${bgClass} mb-3 overflow-hidden`}>
+            <Component class="w-[78%] h-[78%]" />
+          </div>
+          <div class="font-display font-black text-sm md:text-base text-navy dark:text-cream">{name}</div>
+          <div class="text-[11px] md:text-xs text-navy-soft/70 dark:text-cream/60 font-semibold">{breed}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

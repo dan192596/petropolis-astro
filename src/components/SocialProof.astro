@@ -1,0 +1,49 @@
+---
+import { site } from '../data/site';
+
+const testimonials = [
+  {
+    name: 'María José R.',
+    pet: 'dueña de Lulú',
+    text: 'Excelente atención, mi Frenchie sale feliz cada vez. El trato es de verdad como si fuera suyo.',
+  },
+  {
+    name: 'Carlos M.',
+    pet: 'dueño de Mishi',
+    text: 'Profesionales y cariñosos. Llevamos años con ellos y nunca nos han fallado.',
+  },
+  {
+    name: 'Andrea L.',
+    pet: 'dueña de Bianca',
+    text: 'El grooming queda impecable y los precios son justos. 100% recomendados en la zona.',
+  },
+];
+---
+<section class="py-16 md:py-20">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="grid md:grid-cols-[auto_1fr] gap-8 md:gap-12 items-center">
+      <div class="text-center md:text-left">
+        <div class="inline-flex items-baseline gap-1.5 font-display font-black text-5xl md:text-6xl text-navy dark:text-cream">
+          {site.rating.value}
+          <span class="text-amber-500 text-3xl">★</span>
+        </div>
+        <p class="text-sm font-semibold text-navy-soft dark:text-cream/70 mt-1">
+          {site.rating.count} reseñas en Google
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        {testimonials.map((t) => (
+          <article class="bg-white dark:bg-navy/40 rounded-2xl p-5 border border-navy/5 dark:border-cream/10">
+            <div class="text-amber-500 mb-2" aria-label={`${site.rating.value} estrellas`}>★★★★★</div>
+            <p class="text-sm text-navy-soft dark:text-cream/80 mb-3 leading-relaxed">"{t.text}"</p>
+            <div class="text-xs">
+              <div class="font-bold text-navy dark:text-cream">{t.name}</div>
+              <div class="text-navy-soft/60 dark:text-cream/50">{t.pet}</div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
