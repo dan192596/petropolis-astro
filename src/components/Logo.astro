@@ -1,0 +1,31 @@
+---
+import ODog from './illustrations/ODog.astro';
+
+interface Props {
+  /** Visual scale. `sm` = nav, `md` = card, `lg` = hero. */
+  size?: 'sm' | 'md' | 'lg';
+  /** When true the "olis" segment uses cream instead of navy (useful on dark surfaces). */
+  invert?: boolean;
+  class?: string;
+}
+
+const { size = 'md', invert = false, class: className = '' } = Astro.props;
+
+const sizeClasses = {
+  sm: 'text-xl md:text-2xl',
+  md: 'text-3xl md:text-4xl',
+  lg: 'text-5xl md:text-7xl',
+};
+---
+<span
+  class={`font-logo font-black tracking-tight inline-flex items-baseline leading-none ${sizeClasses[size]} ${className}`}
+  aria-label="Petropolis"
+>
+  <span aria-hidden="true" class="text-pink">p</span>
+  <span aria-hidden="true" class="text-teal">e</span>
+  <span aria-hidden="true" class="text-lime-deep">t</span>
+  <span aria-hidden="true" class="text-pink">r</span>
+  <ODog class="inline-block align-middle w-[0.95em] h-[0.95em] -mx-[0.02em]" />
+  <span aria-hidden="true" class="text-pink">p</span>
+  <span aria-hidden="true" class={invert ? 'text-cream' : 'text-navy'}>olis</span>
+</span>
