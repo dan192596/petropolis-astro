@@ -1,0 +1,49 @@
+# Workflow oficial recomendado por Astro para publicar a GitHub Pages.
+# Se dispara con cada push a main, o manualmente desde la pestaña Actions.
+# Más info: https://docs.astro.build/en/guides/deploy/github/
+name: Deploy to GitHub Pages
+
+on:
+  # Cada push a main desencadena un nuevo deploy
+  push:
+    branches: [main]
+  # También permite correrlo a mano desde la UI de GitHub
+  workflow_dispatch:
+
+# Permisos mínimos que necesita el job para publicar a Pages
+permissions:
+  contents: read       # leer el repo
+  pages: write         # publicar a Pages
+  id-token: write      # autenticar con OIDC (no hace falta token manual)
+
+# Si llega un push mientras otro deploy está corriendo, dejá terminar
+# el actual antes de empezar el siguiente — evita que se piquen entre sí.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # withastro/action hace todo en un solo paso:
+      #   - detecta el package manager (npm en nuestro caso)
+      #   - corre npm ci
+      #   - corre npm run build
+      #   - sube dist/ como artifact que el job de deploy usa
+      - name: Install dependencies and build
+        uses: withastro/action@v3
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy artifact to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { site } from '../data/site';
 import PawCursor from '../components/PawCursor.astro';
+import { withBase } from '../lib/path';
 
 interface Props {
   title?: string;
@@ -15,8 +16,12 @@ const {
   pathname = Astro.url.pathname,
 } = Astro.props;
 
+// canonical and ogImage use Astro.site (full origin) and resolve against
+// the request pathname (which already includes base) so we don't need
+// withBase here — `new URL` handles it.
 const canonical = new URL(pathname, Astro.site ?? site.url).toString();
-const ogImage = new URL('/og-image.png', Astro.site ?? site.url).toString();
+const ogImage = new URL(withBase('og-image.png'), Astro.site ?? site.url).toString();
+const faviconHref = withBase('favicon.svg');
 ---
 <!doctype html>
 <html lang="es">
@@ -33,7 +38,7 @@ const ogImage = new URL('/og-image.png', Astro.site ?? site.url).toString();
       })();
     </script>
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={faviconHref} />
     <link rel="canonical" href={canonical} />
 
     <title>{title}</title>

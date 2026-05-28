@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://petropolis.example.com/sitemap-index.xml
+Sitemap: https://dan192596.github.io/petropolis-astro/sitemap-index.xml

@@ -2,18 +2,25 @@
 import Logo from './Logo.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import WhatsAppButton from './WhatsAppButton.astro';
+import { withBase } from '../lib/path';
+
+// Anchor links (#xxx) only work on the home page. When the user is on
+// /contacto and clicks "Servicios", we want them to jump to home and then
+// to the anchor — so we prepend the home URL.
+const isHome = Astro.url.pathname === withBase('') || Astro.url.pathname === withBase('/');
+const anchor = (id: string) => (isHome ? `#${id}` : `${withBase('')}#${id}`);
 ---
 <header class="sticky top-0 z-40 backdrop-blur bg-white/80 dark:bg-[color:var(--surface-bg)]/80 border-b border-navy/5 dark:border-cream/10">
   <nav class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-4">
-    <a href="/" aria-label="Inicio">
+    <a href={withBase('')} aria-label="Inicio">
       <Logo size="sm" />
     </a>
 
     <ul class="hidden md:flex items-center gap-7 text-sm font-semibold text-navy-soft dark:text-cream/80">
-      <li><a href="#servicios" class="hover:text-teal transition-colors">Servicios</a></li>
-      <li><a href="#galeria" class="hover:text-teal transition-colors">Galería</a></li>
-      <li><a href="#ubicacion" class="hover:text-teal transition-colors">Ubicación</a></li>
-      <li><a href="/contacto" class="hover:text-teal transition-colors">Contacto</a></li>
+      <li><a href={anchor('servicios')} class="hover:text-teal transition-colors">Servicios</a></li>
+      <li><a href={anchor('galeria')} class="hover:text-teal transition-colors">Galería</a></li>
+      <li><a href={anchor('ubicacion')} class="hover:text-teal transition-colors">Ubicación</a></li>
+      <li><a href={withBase('contacto')} class="hover:text-teal transition-colors">Contacto</a></li>
     </ul>
 
     <div class="flex items-center gap-2">
@@ -38,10 +45,10 @@ import WhatsAppButton from './WhatsAppButton.astro';
 
   <div class="md:hidden hidden px-5 pb-4" data-mobile-menu>
     <ul class="flex flex-col gap-2 text-sm font-semibold text-navy-soft dark:text-cream/80">
-      <li><a href="#servicios" class="block py-2">Servicios</a></li>
-      <li><a href="#galeria" class="block py-2">Galería</a></li>
-      <li><a href="#ubicacion" class="block py-2">Ubicación</a></li>
-      <li><a href="/contacto" class="block py-2">Contacto</a></li>
+      <li><a href={anchor('servicios')} class="block py-2">Servicios</a></li>
+      <li><a href={anchor('galeria')} class="block py-2">Galería</a></li>
+      <li><a href={anchor('ubicacion')} class="block py-2">Ubicación</a></li>
+      <li><a href={withBase('contacto')} class="block py-2">Contacto</a></li>
     </ul>
   </div>
 </header>
