@@ -34,8 +34,14 @@ jobs:
       #   - corre npm ci
       #   - corre npm run build
       #   - sube dist/ como artifact que el job de deploy usa
+      #
+      # node-version: 22 → Astro 6 requiere Node 22+ (lo dice nuestro
+      # package.json en "engines"). Por default la action usa Node 20,
+      # lo cual hace fallar el build. Acá lo forzamos a 22.
       - name: Install dependencies and build
         uses: withastro/action@v3
+        with:
+          node-version: 22
 
   deploy:
     needs: build
